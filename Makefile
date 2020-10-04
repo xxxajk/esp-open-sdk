@@ -145,6 +145,7 @@ crosstool-NG/ct-ng: crosstool-NG/bootstrap
 	$(MAKE) -C crosstool-NG -f ../Makefile _ct-ng
 
 _ct-ng:
+	cat ../crosstool-configure.ac-fixup > configure.ac
 	./bootstrap
 	./configure --prefix=`pwd`
 	$(MAKE) MAKELEVEL=0
