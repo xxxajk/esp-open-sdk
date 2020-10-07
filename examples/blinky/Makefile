@@ -1,4 +1,4 @@
-CC = /root/NetBeansProjects/esp-open-sdk/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc
+CC = ../../xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc
 CFLAGS = -Os -I. -mlongcalls -ffunction-sections -fdata-sections
 LDLIBS = -Wl,-gc-sections -ffunction-sections -fdata-sections -nostdlib -Wl,--start-group -lmain -lnet80211 -lwpa -llwip -lpp -lphy -lc -Wl,--end-group -lgcc
 LDFLAGS = -Teagle.app.v6.ld
