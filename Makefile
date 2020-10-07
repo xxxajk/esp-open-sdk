@@ -104,11 +104,16 @@ ifeq ($(STANDALONE),y)
 	@sed -e 's/\r//' sdk/ld/eagle.rom.addr.v6.ld >$(TOOLCHAIN)/xtensa-lx106-elf/sysroot/usr/lib/eagle.rom.addr.v6.ld
 endif
 
-clean: clean-sdk
-	$(MAKE) -C crosstool-NG clean MAKELEVEL=0
+crosstool-NG/config.ac.backup:
+	cat crosstool-NG/configure.ac > crosstool-NG/config.ac.backup
+
+clean: clean-sdk crosstool-NG/config.ac.backup
+	-$(MAKE) -C crosstool-NG clean MAKELEVEL=0
 	-rm -rf crosstool-NG/.build/src
 	-rm -f crosstool-NG/local-patches/gcc/4.8.5/1000-*
 	-rm -rf $(TOOLCHAIN)
+	cat crosstool-NG/config.ac.backup > crosstool-NG/configure.ac
+	rm -f crosstool-NG/config.ac.backup
 
 clean-sdk:
 	rm -rf $(VENDOR_SDK_DIR)
@@ -144,8 +149,11 @@ crosstool-NG: crosstool-NG/ct-ng
 crosstool-NG/ct-ng: crosstool-NG/bootstrap
 	$(MAKE) -C crosstool-NG -f ../Makefile _ct-ng
 
-_ct-ng:
+config.ac.backup:
+	cat configure.ac > config.ac.backup
 	cat ../crosstool-configure.ac-fixup > configure.ac
+
+_ct-ng: config.ac.backup
 	./bootstrap
 	./configure --prefix=`pwd`
 	$(MAKE) MAKELEVEL=0
